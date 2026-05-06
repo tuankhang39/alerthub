@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: alerthub_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: alerthub
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+  postgres:
+    image: postgres:15
+    container_name: alerthub_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: alerthub
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    container_name: alerthub_redis
+    ports:
+      - "6379:6379"
