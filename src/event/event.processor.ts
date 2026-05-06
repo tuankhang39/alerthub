@@ -31,16 +31,7 @@ export class EventProcessor {
       : (payload.severity ?? AlertSeverity.LOW);
 
     await this.dataSource.transaction(async (manager) => {
-      // 1. save event
       const event = await this.eventRepository.createEvent(payload, manager);
-
-      // 2. evaluate rule
-      const isCritical = await this.ruleService.shouldEscalate(
-        payload.deviceId,
-        payload.type,
-      );
-
-      // 3. create alert
       await this.alertRepository.createAlert(
         {
           type: payload.type,

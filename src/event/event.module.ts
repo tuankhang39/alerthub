@@ -11,13 +11,20 @@ import { Alert } from 'src/alert/alert.entity';
 import { Device } from 'src/devices/device.entity';
 import { EventRepository } from './event.repository';
 import { AlertRepository } from 'src/alert/alert.repository';
+import { DeviceModule } from 'src/devices/device.module';
+import { EventService } from './event.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Event, Alert, Device]), QueueModule],
+  imports: [
+    TypeOrmModule.forFeature([Event, Alert, Device]),
+    QueueModule,
+    DeviceModule,
+  ],
   controllers: [EventController],
   providers: [
-    EventProcessor,
     RuleService,
+    EventService,
+    EventProcessor,
     EventRepository,
     AlertRepository,
     Logger,

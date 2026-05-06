@@ -13,7 +13,8 @@ export class AlertController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get alerts with filters',
+    summary:
+      'Get alerts with filters (Backlog 3, 5) - Use "search" parameters to filter by device name, message content, or device ID',
   })
   findAll(@Query() query: QueryAlertDto) {
     return this.service.findAll(query);

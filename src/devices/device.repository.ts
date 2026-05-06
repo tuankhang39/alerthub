@@ -18,6 +18,12 @@ export class DeviceRepository {
     });
   }
 
+  async findById(id: string) {
+    return this.repo.findOne({
+      where: { id },
+    });
+  }
+
   async createDevice(payload: Partial<Device>) {
     const device = this.repo.create(payload);
     return this.repo.save(device);

@@ -10,5 +10,6 @@ import { DeviceRepository } from './device.repository';
   imports: [TypeOrmModule.forFeature([Device, Event, Alert])],
   controllers: [DeviceController],
   providers: [DeviceService, DeviceRepository],
+  exports: [DeviceService],
 })
 export class DeviceModule {}

@@ -11,7 +11,8 @@ export class DeviceService {
 
   async create(dto: CreateDeviceDto) {
     const existed = await this.deviceRepository.findByName(dto.name);
-
+    // Assuming device names must be unique, we check if a device with the same name already exists before creating a new one.
+    // If it does, we throw a BadRequestException to inform the client that the device name is already taken.
     if (existed) {
       throw new BadRequestException('Device name already exists');
     }
@@ -28,5 +29,8 @@ export class DeviceService {
         total: devices.length,
       },
     };
+  }
+  async findById(id: string) {
+    return this.deviceRepository.findById(id);
   }
 }

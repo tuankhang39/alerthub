@@ -1,8 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateEventDto } from './dto/event.dto';
+import { EventService } from './event.service';
 
 @ApiTags('events')
 @Controller({
@@ -10,19 +9,11 @@ import { CreateEventDto } from './dto/event.dto';
   version: '1',
 })
 export class EventController {
-  constructor(
-    @InjectQueue('event')
-    private readonly queue: Queue,
-  ) {}
+  constructor(private readonly eventService: EventService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Ingest realtime device event' })
+  @ApiOperation({ summary: 'Ingest realtime device event (Backlog 2, 4)' })
   async create(@Body() dto: CreateEventDto) {
-    await this.queue.add('event.created', dto);
-
-    return {
-      status: 'accepted',
-      message: 'Event queued successfully',
-    };
+    return this.eventService.create(dto);
   }
 }

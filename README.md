@@ -17,6 +17,13 @@ The system supports:
 
 # Running the Project
 
+### Clone project
+
+```bash
+git clone https://github.com/tuankhang39/alerthub
+cd alerthub
+```
+
 ### Prerequisites
 
 - Docker
@@ -37,6 +44,85 @@ This starts PostgreSQL, Redis, and the NestJS app. Migrations run automatically 
 | API          | http://localhost:3000           |
 | Swagger UI   | http://localhost:3000/api-docs  |
 | Health Check | http://localhost:3000/v1/health |
+
+# API Testing
+
+All APIs are documented in Swagger UI.
+
+Users can test the entire system directly from:
+
+```bash
+http://localhost:3000/api-docs
+```
+
+Swagger provides:
+
+- request body examples
+- query parameter testing
+- realtime API execution
+- response previews
+
+## Quick Test Flow
+
+### 1. Create Device
+
+Register a new device.
+
+```http
+POST /api/v1/devices
+```
+
+---
+
+### 2. Send Event
+
+Send realtime alert events from the device.
+
+```http
+POST /api/v1/events
+```
+
+Events are processed asynchronously through Redis queue workers.
+
+---
+
+### 3. Get Alerts
+
+Retrieve generated alerts.
+
+```http
+GET /api/v1/alerts
+```
+
+---
+
+### 4. Trigger Critical Escalation
+
+Send more than 5 events of the same type within 60 seconds.
+
+```http
+POST /api/v1/events
+```
+
+Then verify escalated alerts:
+
+```http
+GET /api/v1/alerts?severity=critical
+```
+
+---
+
+### 5. Search Alerts
+
+Search alerts by:
+
+- message keyword
+- device name
+- device ID
+
+```http
+GET /api/v1/alerts?search=temperature
+```
 
 ---
 
